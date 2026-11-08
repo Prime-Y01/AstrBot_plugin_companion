@@ -4,4 +4,4 @@ author: Companion contributors
 version: 0.2.1
 desc: 独立进程的“予其真实”面板：此刻 / 情绪 / 成长 / 今天她 / 记忆星图 / 命令；自带轻量状态引擎，支持主人私聊写入状态与记忆，或 external 模式读取已有 bot。
 short_desc: 可安装的“予其真实”面板 + 聊天/记忆桥
-repo: https://github.com/Prime-Y01/astrbot_plugin_companion
+repo: https://github.com/Prime-Y01/AstrBot_plugin_companion
