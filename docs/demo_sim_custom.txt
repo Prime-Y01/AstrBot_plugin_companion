@@ -1,0 +1,10 @@
+[PASS] outing_place                 自定义商场
+[PASS] outing_weather               沙尘
+[PASS] outing_mood                  mood
+[PASS] outing_activity              out
+[PASS] outing_tick                  eat
+REAL_SHA256 (before == after):
+  (portable sim: no host state files touched)
+SUMMARY {"scenario": "outing_day", "pass": 5, "total": 5, "all_pass": true, "sha_ok": true, "changed": [], "failed": [], "elapsed_ms": 55, "temp_removed": true, "data": {"outing": {"place": "自定义商场", "weather": "沙尘", "address": "自定义路9号", "route_minutes": 18.0, "fare": 3.0}}}
+RESULT 5/5 PASS
+ALL_PASS

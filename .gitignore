@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.venv/
+data/
+demo_data/
+tmp_demo/
+tmp_engine/
+tests/__pycache__/
+panel_cache/
+panel_logs/
+*.log

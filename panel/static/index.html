@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>予其真实 · Companion</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="offline" id="offline">连接断了 · 正在重试</div>
+
+<header class="top">
+  <div class="brand">
+    <div class="brand-mark"><span></span></div>
+    <div class="brand-text">
+      <h1 id="her-name">她</h1>
+      <div class="brand-sub"><span id="brand-title">予其真实</span> <i id="brand-sub">COMPANION · STATE</i></div>
+    </div>
+  </div>
+  <div class="top-right">
+    <button class="nav-btn" id="open-command" title="命令：只写 data/ui_commands/，心跳每分钟消费">
+      <span class="nav-cmd"></span>命令
+    </button>
+    <button class="nav-btn" id="open-sim" title="隔离模拟：临时目录里跑，不碰生产">
+      <span class="nav-play"></span>模拟
+    </button>
+    <button class="nav-btn" id="open-memory" title="打开记忆（只读导出；管理只写队列）">
+      <span class="nav-ico"></span>记忆 <b id="mem-count">—</b>
+    </button>
+    <button class="switch" id="maskel-toggle" aria-pressed="true" title="上镜模式：遮住欲望、今天她与记忆原文；本机可切换完整模式">
+      <span class="switch-track"><span class="switch-knob"></span></span>
+      <span class="switch-text" id="maskel-label">上镜模式</span>
+    </button>
+    <div class="clock">
+      <div class="clock-time" id="clock">--:--:--</div>
+      <div class="clock-date" id="date">—</div>
+    </div>
+  </div>
+</header>
+
+<main class="grid">
+  <section class="card now" id="card-now">
+    <div class="card-head">
+      <div class="card-title"><span class="idx">01</span><span class="zh">此刻</span><span class="en">NOW</span></div>
+      <div class="live-pill"><i></i><span id="updated">刚刚更新</span></div>
+    </div>
+
+    <div class="hero">
+      <div class="orb" id="orb" style="--orb:#8E96C8;--p:0">
+        <div class="orb-ticks"></div>
+        <div class="orb-ring"></div>
+        <div class="orb-inner"><span id="orb-glyph">睡</span></div>
+      </div>
+      <div class="hero-main">
+        <div class="activity-line">
+          <span class="activity" id="activity">在做什么</span>
+        </div>
+        <div class="activity-sub" id="activity-sub">—</div>
+        <p class="narrative" id="narrative">正在读她的状态…</p>
+      </div>
+    </div>
+
+    <div class="chips">
+      <div class="chip"><span class="k">房间</span><span class="v" id="room">—</span></div>
+      <div class="chip"><span class="k">穿着</span><span class="v" id="outfit">—</span></div>
+      <div class="chip"><span class="k">天气</span><span class="v" id="weather-inline">—</span></div>
+    </div>
+
+    <div class="today">
+      <div class="today-head">
+        <span class="today-title">今天</span>
+        <span class="today-sub" id="today-sub">—</span>
+      </div>
+      <div class="ribbon" id="ribbon">
+        <div class="ribbon-track" id="ribbon-track"></div>
+        <div class="ribbon-future" id="ribbon-future"></div>
+        <div class="ribbon-now" id="ribbon-now"></div>
+      </div>
+      <div class="ribbon-axis" id="ribbon-axis">
+        <span>00</span><span>06</span><span>12</span><span>18</span><span>24</span>
+      </div>
+      <div class="legend" id="legend"></div>
+    </div>
+
+    <div class="meters">
+      <div class="meter">
+        <div class="meter-top"><span>体力</span><b id="energy-val">—</b></div>
+        <div class="bar"><i id="energy-bar"></i></div>
+      </div>
+      <div class="meter">
+        <div class="meter-top"><span>心情</span><b id="mood-val">—</b></div>
+        <div class="bar"><i id="mood-bar"></i></div>
+        <div class="meter-sub" id="mood-sub">&nbsp;</div>
+      </div>
+      <div class="meter desire" id="meter-desire">
+        <div class="meter-top"><span id="desire-label">欲望</span><b id="desire-val">—</b></div>
+        <div class="bar"><i id="desire-bar"></i></div>
+      </div>
+      <div class="meter stat">
+        <div class="meter-top"><span>成长</span><b id="growth-val">—</b></div>
+        <div class="stat-line"><div class="stat-dots" id="growth-dots"></div><span class="stat-note" id="growth-note"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card emotions" id="card-emotions">
+    <div class="card-head">
+      <div class="card-title"><span class="idx">02</span><span class="zh">情绪</span><span class="en">EMOTION · 24H</span></div>
+      <div class="mode-pill" id="emotion-mode">—</div>
+    </div>
+
+    <div class="emo-row" id="emo-row"></div>
+    <div class="emo-now" id="emo-now">此刻 · —</div>
+
+    <div class="chart-wrap" id="chart-wrap">
+      <canvas id="emotion-chart"></canvas>
+      <div class="chart-empty" id="chart-empty">过去 24 小时，她没什么情绪起伏。</div>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+
+    <div class="events" id="events"></div>
+  </section>
+
+  <section class="card growth" id="card-growth">
+    <div class="card-head">
+      <div class="card-title"><span class="idx">04</span><span class="zh">成长</span><span class="en">MILESTONES</span></div>
+      <div class="growth-count" id="growth-count">—</div>
+    </div>
+    <div class="timeline" id="timeline"></div>
+    <div class="growth-foot" id="growth-foot">只记第一次：去过的地方、看完的番、学会的事、说出的「不」。</div>
+  </section>
+
+  <section class="card life-card" id="life-card">
+    <div class="card-head">
+      <div class="card-title"><span class="idx">03</span><span class="zh">今天她</span><span class="en">TODAY</span></div>
+      <div class="life-date" id="life-date">—</div>
+    </div>
+    <div class="life-list" id="life-list"></div>
+    <div class="life-foot">只读她今天做过的小事 · <span id="life-foot-note">上镜模式已遮</span></div>
+  </section>
+</main>
+
+<div class="memory" id="memory" aria-hidden="true">
+  <header class="mem-top">
+    <div class="mem-top-left">
+      <button class="mem-back" id="close-memory">← 返回</button>
+      <div class="mem-title"><span>记忆</span><i>MEMORY · <b id="mem-title-count">—</b></i></div>
+    </div>
+    <div class="mem-top-right">
+      <button class="switch" id="memory-mask" aria-pressed="true">
+        <span class="switch-track"><span class="switch-knob"></span></span>
+        <span class="switch-text" id="memory-maskel-label">上镜模式</span>
+      </button>
+      <button class="mem-back" id="mem-refresh">重读导出</button>
+      <div class="mem-export" id="mem-export">—</div>
+    </div>
+  </header>
+
+  <div class="mem-body">
+    <aside class="mem-side">
+      <div class="mem-filters">
+        <div class="mem-search">
+          <span>⌕</span>
+          <input id="mem-q" type="search" placeholder="搜内容 / 标签…" autocomplete="off" spellcheck="false">
+        </div>
+        <div class="mem-kinds" id="mem-kinds"></div>
+        <div class="mem-filter-row">
+          <select id="mem-day" class="mem-select"></select>
+          <select id="mem-sort" class="mem-select">
+            <option value="time">按时间</option>
+            <option value="recall">按召回</option>
+          </select>
+        </div>
+        <div class="mem-filter-row">
+          <label class="mem-check"><input type="checkbox" id="mem-recall"> 只看有召回 <em id="mem-recall-note"></em></label>
+          <span class="mem-stats" id="mem-stats">—</span>
+        </div>
+      </div>
+
+      <div class="mem-list-head">
+        <span id="mem-shown">—</span>
+        <span id="mem-status">—</span>
+      </div>
+      <div class="mem-list" id="mem-list"></div>
+      <button class="mem-more" id="mem-more">加载更多</button>
+    </aside>
+
+    <section class="mem-stage" id="mem-stage">
+      <canvas id="nebula"></canvas>
+      <div class="stage-head">
+        <div class="stage-title">记忆星图 <i>NEBULA · 3D</i></div>
+        <div class="stage-legend" id="stage-legend"></div>
+      </div>
+      <div class="stage-hint" id="stage-hint">拖动旋转 · 滚轮缩放 · 点左侧一条记忆，星图会放大到它</div>
+      <div class="stage-focus" id="stage-focus"></div>
+      <div class="stage-hover" id="stage-hover"></div>
+      <button class="stage-reset" id="stage-reset" title="回到全景">全景</button>
+    </section>
+  </div>
+
+  <div class="mem-detail" id="mem-detail" aria-hidden="true">
+    <div class="mem-detail-card">
+      <div class="mem-detail-head">
+        <div class="mem-detail-title"><span class="mem-kind" id="md-kind">—</span><span id="md-id">#—</span><span id="md-date">—</span></div>
+        <div class="mem-detail-tools">
+          <button class="mem-nav" id="md-prev" title="上一条">‹</button>
+          <button class="mem-nav" id="md-next" title="下一条">›</button>
+          <button class="mem-x" id="md-close">×</button>
+        </div>
+      </div>
+      <div class="mem-mini-wrap">
+        <canvas id="mem-mini"></canvas>
+        <div class="mem-mini-hint">拖动旋转 · 点节点跳转</div>
+      </div>
+      <div class="mem-detail-scroll">
+        <p class="mem-text" id="md-text">—</p>
+        <div class="mem-text-mask" id="md-mask">
+          <div class="md-maskel-line w1"></div>
+          <div class="md-maskel-line w2"></div>
+          <div class="md-maskel-line w3"></div>
+          <div class="md-maskel-line w4"></div>
+          <div class="md-maskel-line w5"></div>
+          <div class="md-maskel-line w6"></div>
+          <div class="md-maskel-line w7"></div>
+          <div class="md-maskel-note">上镜模式 · 私密文本已遮；本机切完整模式可读</div>
+        </div>
+        <div class="mem-tags" id="md-tags"></div>
+        <div class="mem-meta" id="md-meta"></div>
+      </div>
+      <div class="mem-actions" id="mem-actions">
+        <button class="mem-btn" id="md-pin">置顶</button>
+        <button class="mem-btn" id="md-tag">标签</button>
+        <button class="mem-btn" id="md-edit">编辑</button>
+        <button class="mem-btn danger" id="md-delete">删除</button>
+      </div>
+      <div class="mem-editor" id="mem-editor">
+        <div id="mem-editor-body"></div>
+        <div class="mem-editor-actions">
+          <button class="mem-btn" id="mem-cancel">取消</button>
+          <button class="mem-btn primary" id="mem-save">提交</button>
+        </div>
+      </div>
+      <div class="mem-result" id="mem-result"></div>
+    </div>
+  </div>
+</div>
+
+<div class="sim" id="sim" aria-hidden="true">
+  <header class="sim-top">
+    <div class="sim-top-left">
+      <button class="mem-back" id="close-sim">← 返回</button>
+      <div class="mem-title"><span>模拟</span><i>ISOLATED SIM · <b id="sim-title">待机</b></i></div>
+    </div>
+    <div class="sim-top-right">
+      <span class="sim-pill" id="sim-pill">待机</span>
+      <button class="sim-run" id="sim-run">▶ 开始模拟</button>
+      <button class="sim-stop" id="sim-stop" disabled>停止</button>
+    </div>
+  </header>
+
+  <div class="sim-body">
+    <aside class="sim-side">
+      <div class="sim-kicker">ISOLATED SIMULATION</div>
+      <h2>隔离模拟</h2>
+      <p>在临时目录里跑她的状态逻辑：不读不写生产 <b>data/</b>，跑完自动比对 9 个真实状态文件的 SHA256。</p>
+
+      <div class="sim-form">
+        <div class="sim-field wide">
+          <label>场景</label>
+          <select id="sim-scenario">
+            <option value="outing_day">一日出门</option>
+          </select>
+        </div>
+        <div class="sim-param-grid" id="sim-main-grid">
+          <div class="sim-field"><label>地点</label>
+            <select id="sim-place">
+              <option value="demo_mall">示例商场</option>
+              <option value="demo_park">示例公园</option>
+            </select>
+          </div>
+          <div class="sim-field"><label>天气</label>
+            <select id="sim-weather">
+              <option value="hot">热</option>
+              <option value="warm">暖</option>
+              <option value="cool">凉</option>
+              <option value="rain">雨</option>
+              <option value="snow">雪</option>
+            </select>
+          </div>
+          <div class="sim-field"><label>心情</label><input id="sim-mood" type="number" min="0" max="1" step="0.05" value="0.75"></div>
+          <div class="sim-field"><label>疼痛</label><input id="sim-pain" type="number" min="0" max="1" step="0.05" value="0.10"></div>
+          <div class="sim-field"><label>体力</label><input id="sim-energy" type="number" min="0" max="1" step="0.05" value="0.70"></div>
+          <div class="sim-field"><label>场景</label>
+            <select id="sim-scene">
+              <option value="中庭">中庭</option>
+              <option value="走廊">走廊</option>
+              <option value="影院里">影院里</option>
+              <option value="休息区">休息区</option>
+              <option value="长椅">长椅</option>
+            </select>
+          </div>
+        </div>
+        <div class="sim-param-grid" id="sim-custom-grid" style="display:none">
+          <div class="sim-field"><label>地点名</label><input id="sim-custom-place-name" value="自定义商场"></div>
+          <div class="sim-field"><label>地址</label><input id="sim-custom-address" value="自定义路9号"></div>
+          <div class="sim-field"><label>区</label><input id="sim-custom-district" value="示例区"></div>
+          <div class="sim-field"><label>地铁站</label><input id="sim-custom-station" value="自定义站"></div>
+          <div class="sim-field"><label>线路</label><input id="sim-custom-line" value="9号线"></div>
+          <div class="sim-field"><label>经纬度</label><input id="sim-custom-location" value="121.400000,31.200000"></div>
+          <div class="sim-field"><label>路线分钟</label><input id="sim-custom-route" type="number" min="1" max="45" step="1" value="18"></div>
+          <div class="sim-field"><label>票价</label><input id="sim-custom-fare" type="number" min="0" max="100" step="0.5" value="3"></div>
+          <div class="sim-field"><label>天气文本</label><input id="sim-custom-weather" value="多云"></div>
+          <div class="sim-field"><label>场景名</label><input id="sim-custom-scene" value="中庭"></div>
+          <div class="sim-field"><label>seed</label><input id="sim-custom-seed" type="number" min="0" step="1" value="42"></div>
+        </div>
+        <div class="sim-adult" id="sim-adult">成人场景 · 不上镜</div>
+        <div class="sim-param-note" id="sim-param-note">未用到的参数会被脚本忽略；前端只传 JSON，服务端白名单校验。</div>
+      </div>
+      <div class="sim-current" id="sim-current">待机 · 选一个场景</div>
+
+      <div class="sim-facts">
+        <div><span>套件</span><b>sim_her.py</b></div>
+        <div><span>检查项</span><b id="sim-fact-checks">随场景</b></div>
+        <div><span>预计</span><b>0.2–2s</b></div>
+        <div><span>上次</span><b id="sim-last">—</b></div>
+      </div>
+      <div class="sim-safety">只允许跑固定脚本，不能自定义命令。参数只收 place / weather / mood / pain / energy / scene。</div>
+    </aside>
+
+    <main class="sim-main">
+      <div class="sim-summary">
+        <div class="sim-stat"><span>RESULT</span><b id="sim-result">—</b></div>
+        <div class="sim-stat"><span>PASS / FAIL</span><b id="sim-counts">—</b></div>
+        <div class="sim-stat"><span>REAL DATA</span><b id="sim-real">—</b></div>
+        <div class="sim-stat"><span>ELAPSED</span><b id="sim-time">—</b></div>
+      </div>
+      <div class="sim-log-wrap">
+        <div class="sim-log-head"><span>OUTPUT</span><span id="sim-log-note">等待开始</span></div>
+        <pre class="sim-log" id="sim-log">尚未运行。</pre>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="cmd-backdrop" id="cmd-backdrop"></div>
+<aside class="cmd-panel" id="cmd-panel" aria-hidden="true">
+  <div class="cmd-head">
+    <div class="cmd-title"><span class="cmd-index">CMD</span><span class="cmd-zh">命令</span><i>UI → QUEUE</i></div>
+    <button class="cmd-x" id="cmd-close">×</button>
+  </div>
+  <div class="cmd-now" id="cmd-now">她此刻 · —</div>
+  <div class="cmd-note">只写 <b>data/ui_commands/</b> · 心跳每分钟消费 · 10 分钟内有效</div>
+  <div class="cmd-grid" id="cmd-grid"></div>
+  <div class="cmd-status" id="cmd-status">选一条指令。不会写她的状态文件。</div>
+  <div class="cmd-history-head"><span>最近指令</span><i>READ ONLY</i></div>
+  <div class="cmd-history" id="cmd-history"></div>
+  <div class="cmd-foot">执行失败会被丢弃并记日志；面板不重试。</div>
+</aside>
+
+<footer class="foot">
+  <div class="foot-left">
+    <span class="shield"></span>只读 · 127.0.0.1:8765 · 不写她的状态文件
+  </div>
+  <div class="foot-right">
+    <span id="fresh-state">状态 —</span>
+    <span class="sep">/</span>
+    <span id="fresh-emotion">情绪 —</span>
+    <span class="sep">/</span>
+    <span>60s 自动刷新</span>
+  </div>
+</footer>
+
+<script>window.__BOOT__ = /*__BOOT_DATA__*/ null;</script>
+<script src="/app.js"></script>
+</body>
+</html>

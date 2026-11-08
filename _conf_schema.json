@@ -1,0 +1,106 @@
+{
+  "enabled": {
+    "description": "启用面板与心跳",
+    "type": "bool",
+    "default": true
+  },
+  "demo_mode": {
+    "description": "首次启动写入示例数据（关掉则从空白状态开始）",
+    "hint": "示例数据只写一次；要重置请先备份/删除插件数据目录。",
+    "type": "bool",
+    "default": true
+  },
+  "port": {
+    "description": "面板端口（只监听 127.0.0.1）",
+    "type": "int",
+    "default": 8765
+  },
+  "her_name": {
+    "description": "面板上她的名字",
+    "type": "string",
+    "default": "她"
+  },
+  "owner_name": {
+    "description": "面板上主人的称呼",
+    "type": "string",
+    "default": "你"
+  },
+  "title": {
+    "description": "面板标题",
+    "type": "string",
+    "default": "予其真实"
+  },
+  "heartbeat_seconds": {
+    "description": "心跳间隔（秒）：推进作息、消费面板命令",
+    "type": "int",
+    "default": 60
+  },
+  "data_dir": {
+    "description": "状态目录；留空用 plugin_data，也可用环境变量 COMPANION_DATA_DIR",
+    "hint": "优先级：配置 > 环境变量 > 默认 plugin_data；相对路径相对 plugin_data。",
+    "type": "string",
+    "default": ""
+  },
+  "runtime_dir": {
+    "description": "缓存/日志/配置目录；留空用 plugin_data，也可用环境变量 COMPANION_RUNTIME_DIR",
+    "type": "string",
+    "default": ""
+  },
+  "source_mode": {
+    "description": "plugin=插件自带引擎（B）；external=读外部状态目录（A，只读）",
+    "hint": "external 模式不启动插件心跳、不写状态，只写命令队列；适合接你已有的 bot。",
+    "type": "string",
+    "default": "plugin"
+  },
+  "external_data_dir": {
+    "description": "external 模式的状态目录；或环境变量 COMPANION_EXTERNAL_DATA_DIR",
+    "hint": "留空会回退 plugin 模式；相对路径相对 plugin_data。",
+    "type": "string",
+    "default": ""
+  },
+  "owner_ids": {
+    "description": "主人的用户 ID，逗号分隔；留空则用管理员判断",
+    "type": "string",
+    "default": ""
+  },
+  "chat_events": {
+    "description": "接 AstrBot 消息事件：主人消息更新状态/心情",
+    "type": "bool",
+    "default": true
+  },
+  "chat_owner_only": {
+    "description": "只处理主人消息",
+    "type": "bool",
+    "default": true
+  },
+  "chat_private_only": {
+    "description": "只处理私聊，不碰群聊",
+    "type": "bool",
+    "default": true
+  },
+  "chat_memory": {
+    "description": "把主人消息写进记忆导出（本地；可用上镜模式遮）",
+    "type": "bool",
+    "default": true
+  },
+  "chat_memory_interval": {
+    "description": "两条聊天记忆的最小间隔（秒）",
+    "type": "int",
+    "default": 120
+  },
+  "chat_growth": {
+    "description": "消息含「第一次」时写一条成长里程碑",
+    "type": "bool",
+    "default": true
+  },
+  "memory_enabled": {
+    "description": "显示记忆页",
+    "type": "bool",
+    "default": true
+  },
+  "sim_enabled": {
+    "description": "显示隔离模拟页（插件自带 sim/sim_her.py，只跑示例数据；默认开启）",
+    "type": "bool",
+    "default": true
+  }
+}
